@@ -240,6 +240,7 @@ function vTornei(){return `<section><h2>In programma · 2026/27</h2>${TORNEI_PRO
 
 function route(){const v=(location.hash||"#home").slice(1);return ["home","calendario","risultati","classifica","tornei"].includes(v)?v:"home"}
 function render(){const v=route();document.querySelectorAll("nav.tabs a").forEach(a=>a.setAttribute("aria-current",a.dataset.v===v?"page":"false"));
+  const at=document.querySelector(`nav.tabs a[data-v="${v}"]`);if(at){const w=at.parentElement;w.scrollLeft=Math.max(0,at.offsetLeft-(w.clientWidth-at.offsetWidth)/2)}
   $("#view").innerHTML=({home:vHome,calendario:vCal,risultati:vRis,classifica:vClass,tornei:vTornei})[v]()+
   `<footer>Dati aggiornati al ${esc(lungo(AGGIORNATO))} · fonte: FIP Toscana e organizzatori dei tornei. App curata dai genitori, non ufficiale della società.</footer>`}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(b){filtro=b.dataset.f;render()}});
