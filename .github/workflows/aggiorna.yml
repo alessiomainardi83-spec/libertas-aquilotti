@@ -1,0 +1,28 @@
+name: Aggiorna risultati FIP
+
+on:
+  schedule:
+    - cron: "40 6 * * *"   # ogni giorno alle 7:40 ora italiana (6:40 UTC d'inverno)
+    - cron: "40 21 * * *"  # e alle 22:40, dopo le partite della sera
+  workflow_dispatch:        # pulsante "Run workflow" per lanciarlo a mano
+
+permissions:
+  contents: write
+
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Leggi fip.it e aggiorna la pagina
+        run: node scripts/aggiorna-fip.mjs index.html
+      - name: Pubblica se qualcosa è cambiato
+        run: |
+          git config user.name "Aggiornamento automatico"
+          git config user.email "actions@users.noreply.github.com"
+          if git diff --quiet; then echo "Niente di nuovo"; exit 0; fi
+          git commit -am "Aggiornamento dati FIP $(TZ=Europe/Rome date +%F)"
+          git push
