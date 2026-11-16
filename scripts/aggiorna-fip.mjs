@@ -4,6 +4,14 @@ import fs from 'node:fs';
 
 const BASE = 'https://fip.it/risultati/?group=campionati-regionali&regione_codice=TO&comitato_codice=RTO&sesso=M&codice_campionato=TAQB&codice_fase=1&codice_girone=86422';
 const MESI = {gennaio:1,febbraio:2,marzo:3,aprile:4,maggio:5,giugno:6,luglio:7,agosto:8,settembre:9,ottobre:10,novembre:11,dicembre:12};
+// Spostamenti concordati tra le società ma non ancora pubblicati da FIP (inseriti il 16/11/2026).
+// Finché fip.it mostra ancora la vecchia data e ora indicate qui, la pagina tiene le proprie.
+// Appena FIP le cambia, vale FIP e la riga si può togliere.
+const IN_ATTESA = {
+  "010675": {data: "2026-11-29", ora: "12:30"},
+  "010697": {data: "2027-01-31", ora: "11:00"},
+  "010704": {data: "2027-02-07", ora: "17:30"},
+};
 const txt = s => s.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;|&apos;/g, "'").replace(/\s+/g, ' ').trim();
 
 async function giornata(ar, n) {
@@ -38,7 +46,9 @@ let cambi = 0;
 html = html.replace(/\["(\d{6})","(\d{4}-\d{2}-\d{2})","(\d{2}:\d{2})","([A-Z]{3})","([A-Z]{3})","([A-Z]{3})","([^"]+)",(null|\d+),(null|\d+)\]/g,
   (row, gara, data, ora, c, o, pal, gio, pc, po) => {
     const f = fip.get(gara); if (!f) return row;
-    const nd = f.data || data, no = f.ora || ora;
+    const att = IN_ATTESA[gara];
+    const fermo = !!att && f.data === att.data && f.ora === att.ora;
+    const nd = fermo ? data : (f.data || data), no = fermo ? ora : (f.ora || ora);
     const npc = f.pc != null ? f.pc : (pc === 'null' ? null : Number(pc));
     const npo = f.po != null ? f.po : (po === 'null' ? null : Number(po));
     const nuovo = `["${gara}","${nd}","${no}","${c}","${o}","${pal}","${gio}",${npc},${npo}]`;
