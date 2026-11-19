@@ -11,6 +11,7 @@ const IN_ATTESA = {
   "010675": {data: "2026-11-29", ora: "12:30"},
   "010697": {data: "2027-01-31", ora: "11:00"},
   "010704": {data: "2027-02-07", ora: "17:30"},
+  "010673": {data: "2026-11-22", ora: "15:00"}, // Roosters-Libertas anticipata alle 10:00 (19/11/2026)
 };
 const txt = s => s.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;|&apos;/g, "'").replace(/\s+/g, ' ').trim();
 
