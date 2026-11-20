@@ -11,8 +11,9 @@ const IN_ATTESA = {
   "010675": {data: "2026-11-29", ora: "12:30"},
   "010697": {data: "2027-01-31", ora: "11:00"},
   "010704": {data: "2027-02-07", ora: "17:30"},
-  "010673": {data: "2026-11-22", ora: "15:00"}, // Roosters-Libertas anticipata alle 10:00 (19/11/2026)
 };
+// Gara 010673 (Roosters-Libertas) rinviata a data da destinarsi il 20/11/2026: tolta dalla pagina,
+// lo script aggiorna solo le righe presenti quindi non la rimette.
 const txt = s => s.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;|&apos;/g, "'").replace(/\s+/g, ' ').trim();
 
 async function giornata(ar, n) {
