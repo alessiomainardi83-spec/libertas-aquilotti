@@ -90,6 +90,11 @@ tr.lib td{font-weight:700;background:var(--ball-soft)}
 .tor b{font-size:18px}
 .tor .res{font-weight:600}
 .tor .line{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tor ul{margin:0;padding-left:18px;font-size:15px}
+.tor table{font-size:14px;margin-top:2px}
+.tor td,.tor th{padding:6px 8px;text-align:left}
+.tor th:nth-child(2),.tor td:nth-child(2){text-align:left}
+.tor tr.lib td{background:var(--ball-soft)}
 footer{color:var(--muted);font-size:13px}
 footer a{color:inherit}
 </style>
@@ -171,7 +176,14 @@ const G = [
 ];
 
 const TORNEI_PROGRAMMA = [
- {nome:"BBF Christmas Cup", periodo:"6-8 dicembre 2026", luogo:"Firenze · palestre M.L. King e Buontalenti", info:"3ª edizione, organizzata da Baloncesto Firenze. Squadre, gironi e orari non ancora pubblicati."},
+ {nome:"BBF Christmas Cup", periodo:"6-8 dicembre 2026", luogo:"Firenze · palestre King, Buontalenti, Marco Polo e Ambrosoli", info:"24 squadre in 8 gironi da 3. Libertas nel Girone Cometa 🌟 con Baloncesto Firenze Bianca e BSL San Lazzaro: domenica 6/12 ore 9:00 e 14:15 alla Marco Polo.",
+  prog:{
+   formula:["4 contro 4, 6 tempini da 5 minuti; a referto da 10 a 14 bambini","Tempo a correre; cambi nel tempino solo per infortunio o 5 falli; palla contesa con la freccia","In parità di tempini vale il punteggio progressivo; se ancora pari, Golden Basket: vince il primo canestro (o i due liberi)"],
+   gironi:[["Babbo Natale 🎅","Lucca Sky Walkers · Union Basket · Terranuova Basket"],["Albero 🎄","US Livorno · Baloncesto Firenze Viola · Pall. Nuoro Sirbones"],["Fiocco ❄","Etruria Bk Project · ABC Castelfiorentino · UISP XVIII Roma"],["Pupazzo ⛄","Pontedera Bk JB · Basket Reggello · Scuola Basket Arezzo"],["Renna 🦌","Don Bosco Livorno · Pino Basket Firenze · Virtus Basket Binasco"],["Regalo 🎁","Basket Calcinaia · Freccia Azzurra Firenze · Collegno Basket"],["Cometa 🌟","Libertas Livorno · Baloncesto Firenze Bianca · BSL San Lazzaro"],["Biscotto 🍪","BCL Lucca · Laurenziana Bk Firenze · Mugello 88"]],
+   girone:[["09:00","Libertas Livorno – Baloncesto Firenze Bianca",true],["11:30","Baloncesto Firenze Bianca – BSL San Lazzaro",false],["14:15","BSL San Lazzaro – Libertas Livorno",true]],
+   percorso:[["1ª","Palestra King","1°-8° posto"],["2ª","Palestra Buontalenti","9°-16° posto"],["3ª","Palestra Marco Polo","17°-24° posto"]],
+   finali:[["1°-2°","12:00","King"],["3°-4°","10:30","King"],["5°-6°","9:00","King"],["7°-8°","11:00","Buontalenti"],["9°-10°","9:45","Buontalenti"],["11°-12°","8:30","Buontalenti"],["13°-14°","11:00","Marco Polo"],["15°-16°","9:45","Marco Polo"],["17°-18°","8:30","Marco Polo"],["19°-20°","11:00","Ambrosoli"],["21°-22°","9:45","Ambrosoli"],["23°-24°","8:30","Ambrosoli"]]
+  }},
  {nome:"Torneo di Natale · Memorial Paolo Calviani", periodo:"27-29 dicembre 2026", luogo:"Terranuova Bracciolini (AR)", info:"Programma 2026 non ancora pubblicato dagli organizzatori (l'ultima edizione è stata la 34ª, nel 2025)."}
 ];
 const TORNEI_STORICO = [
@@ -238,7 +250,19 @@ function vClass(){const cl=classifica();const n=P.filter(giocata).length;
   <p class="note">${esc(CAMPIONATO)}. 2 punti a vittoria, calcolata sulle ${n} partite con risultato ufficiale. <a href="${FIP_URL}" target="_blank" rel="noopener">Classifica sul sito FIP</a></p></section>`}
 
 function torCard(t){return `<div class="card tor"><div class="line"><span class="badge ${t.risultato?"":"soft"}">${esc(t.periodo)}</span></div><b>${esc(t.nome)}</b><span class="note">${esc(t.luogo)}</span>${t.formula?`<span class="note">${esc(t.formula)}</span>`:""}${t.risultato?`<span class="line">${t.top?'<span class="badge hot">🏆</span>':""}<span class="res">${esc(t.risultato)}</span></span>`:""}${t.dettaglio?`<span class="note">${esc(t.dettaglio)}</span>`:""}${t.info?`<span class="note">${esc(t.info)}</span>`:""}</div>`}
-function vTornei(){return `<section><h2>In programma · 2026/27</h2>${TORNEI_PROGRAMMA.map(torCard).join("")}</section>
+function progCard(t){const g=t.prog;return `<div class="card tor"><div class="line"><span class="badge soft">${esc(t.periodo)}</span></div><b>${esc(t.nome)}</b><span class="note">${esc(t.luogo)}</span>
+  <h3>Girone Cometa 🌟 · domenica 6 dicembre · Palestra Marco Polo</h3>
+  <div class="tablewrap"><table><tbody>${g.girone.map(r=>`<tr class="${r[2]?"lib":""}"><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>
+  <span class="note">Nel minibasket conta il numero di tempini vinti. La classifica del girone decide il percorso di lunedì e martedì.</span>
+  <h3>Quarti e semifinali · lunedì 7 dicembre</h3>
+  <span class="note">Quarti alle 11:15 contro la pari classificata del Girone Renna 🦌 (Don Bosco Livorno, Pino Basket Firenze, Virtus Basket Binasco). Semifinali nella stessa palestra: alle 16:30 se si vince il quarto, alle 15:15 se si perde.</span>
+  <div class="tablewrap"><table><thead><tr><th>Nel girone</th><th>Palestra</th><th>Si gioca per</th></tr></thead><tbody>${g.percorso.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody></table></div>
+  <h3>Finali · martedì 8 dicembre</h3>
+  <div class="tablewrap"><table><thead><tr><th>Posto</th><th>Ora</th><th>Palestra</th></tr></thead><tbody>${g.finali.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody></table></div>
+  <span class="note">Premiazioni martedì 8/12 alle 13:00 alla King. Lunedì 7/12 dalle 14:30 alle 15:00, sempre alla King, c'è la Food & Hoop Challenge.</span>
+  <h3>Regole</h3><ul>${g.formula.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+  <h3>Tutti i gironi</h3><div class="tablewrap"><table><tbody>${g.gironi.map(r=>`<tr class="${/Cometa/.test(r[0])?"lib":""}"><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div></div>`}
+function vTornei(){return `<section><h2>In programma · 2026/27</h2>${TORNEI_PROGRAMMA.map(t=>t.prog?progCard(t):torCard(t)).join("")}</section>
   <section><h2>Stagione 2025/26</h2>${TORNEI_STORICO.map(torCard).join("")}<p class="note">Per questi tornei non ci sono ancora le date dell'edizione 2026/27. Appena escono li sposto in “In programma”.</p></section>`}
 
 function route(){const v=(location.hash||"#home").slice(1);return ["home","calendario","risultati","classifica","tornei"].includes(v)?v:"home"}
