@@ -12,8 +12,7 @@ const IN_ATTESA = {
   "010697": {data: "2027-01-31", ora: "11:00"},
   "010704": {data: "2027-02-07", ora: "17:30"},
 };
-// Gara 010673 (Roosters-Libertas) rinviata a data da destinarsi il 20/11/2026: tolta dalla pagina,
-// lo script aggiorna solo le righe presenti quindi non la rimette.
+// Gara 010673: recupero fissato da FIP il 19/12/2026 ore 15:00, Libertas-Roosters all'Oltremare.
 const txt = s => s.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;|&apos;/g, "'").replace(/\s+/g, ' ').trim();
 
 async function giornata(ar, n) {
