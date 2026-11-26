@@ -11,6 +11,7 @@ const IN_ATTESA = {
   "010675": {data: "2026-11-29", ora: "12:30"},
   "010697": {data: "2027-01-31", ora: "11:00"},
   "010704": {data: "2027-02-07", ora: "17:30"},
+  "010679": {data: "2026-12-03", ora: "18:00"}, // spostata al 30/11 ore 17:45, Via Cecconi (inserita il 26/11/2026)
 };
 // Gara 010673: recupero fissato da FIP il 19/12/2026 ore 15:00, Libertas-Roosters all'Oltremare.
 const txt = s => s.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;|&apos;/g, "'").replace(/\s+/g, ' ').trim();
